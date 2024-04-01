@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 // Adiciona o contexto de banco de dados ao contêiner de DI.
 // Especifica que o contexto de banco de dados usará um banco de dados em memória.
 builder.Services.AddDbContext<ProdutoContext>(opt =>
-    opt.UseInMemoryDatabase("TodoList"));
+    opt.UseInMemoryDatabase("ProdutoList"));
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
