@@ -11,15 +11,15 @@ namespace TodoApi.Controllers
 {
     // Substitua [controller] pelo nome do controlador, que é o nome de classe do controlador
     // menos o sufixo "Controlador" por convenção. Para esta amostra, o nome da classe do controlador é
-    // TodoItemsController. Portanto, o nome do controlador é "TodoItems".
+    //  ProdutosController. Portanto, o nome do controlador é "Produtos".
     // O roteamento do ASP.NET Core não diferencia maiúsculas de minúsculas.
     [Route("api/[controller]")]
     [ApiController]
-    public class TodoItemsController : ControllerBase
+    public class ProdutosController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly ProdutoContext _context;
 
-        public TodoItemsController(TodoContext context)
+        public ProdutosController(ProdutoContext context)
         {
             _context = context;
         }
@@ -34,44 +34,44 @@ namespace TodoApi.Controllers
         // O caminho da URL de cada método é construído da seguinte maneira.
         // Se o atributo [HttpGet] tiver um modelo de rota (por exemplo, [HttpGet("products")]), acrescente isso ao caminho.
         // Porém esta não usa.
-        // GET: api/TodoItems
+        // GET: api/Produtos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
+        public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
         {
-            return await _context.TodoItems.ToListAsync();
+            return await _context.Produtos.ToListAsync();
         }
 
-        // No método GetTodoItem a seguir, "{id}" é uma variável de espaço reservado para o identificador exclusivo do item pendente.
-        // Quando GetTodoItem é invocado, o valor de "{id}" na URL é fornecido para o método no parâmetro id.
-        // GET: api/TodoItems/5
+        // No método GetProduto a seguir, "{id}" é uma variável de espaço reservado para o identificador exclusivo do item pendente.
+        // Quando GetProduto é invocado, o valor de "{id}" na URL é fornecido para o método no parâmetro id.
+        // GET: api/Produtos/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
+        public async Task<ActionResult<Produto>> GetProduto(long id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var Produto = await _context.Produtos.FindAsync(id);
 
-            if (todoItem == null)
+            if (Produto == null)
             {
                 return NotFound();
             }
 
-            return todoItem;
+            return Produto;
         }
 
-        // PutTodoItem é semelhante a PostTodoItem, exceto pelo uso de HTTP PUT.
+        // PutProduto é semelhante a PostProduto, exceto pelo uso de HTTP PUT.
         // A resposta é 204 (Sem conteúdo). De acordo com a especificação de HTTP, uma solicitação PUT
         // exige que o cliente envie a entidade inteira atualizada, não apenas as alterações.
         // Para dar suporte a atualizações parciais, use HTTP PATCH.
         // Devera haver algum item dentro do banco para realizar está ação.
-        // PUT: api/TodoItems/5
+        // PUT: api/Produtos/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(long id, TodoItem todoItem)
+        public async Task<IActionResult> PutProduto(long id, Produto Produto)
         {
-            if (id != todoItem.Id)
+            if (id != Produto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(todoItem).State = EntityState.Modified;
+            _context.Entry(Produto).State = EntityState.Modified;
 
             try
             {
@@ -79,7 +79,7 @@ namespace TodoApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TodoItemExists(id))
+                if (!ProdutoExists(id))
                 {
                     return NotFound();
                 }
@@ -92,49 +92,49 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        // POST: api/TodoItems
+        // POST: api/Produtos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
+        public async Task<ActionResult<Produto>> PostProduto(Produto Produto)
         {
-            _context.TodoItems.Add(todoItem);
+            _context.Produtos.Add(Produto);
             await _context.SaveChangesAsync();
 
-            // return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
+            // return CreatedAtAction("GetProduto", new { id = Produto.Id }, Produto);
             // O código é um método HTTP POST, conforme indicado pelo atributo [HttpPost].
-            // O método obtém o valor do TodoItem no corpo da solicitação HTTP.
-            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
+            // O método obtém o valor do Produto no corpo da solicitação HTTP.
+            return CreatedAtAction(nameof(GetProduto), new { id = Produto.Id }, Produto);
             // O método CreatedAtAction: 
             // Retorna um código de status HTTP 201 em caso de êxito. HTTP 201 é a resposta padrão
             // para um método HTTP POST que cria um recurso no servidor.
             // Adiciona um cabeçalho de Local à resposta. O cabeçalho Location especifica o URI
             // do item de tarefas pendentes recém-criado. Para obter mais informações, confira 10.2.2 201 Criado.
-            // Faz referência à ação GetTodoItem para criar o URI de 
+            // Faz referência à ação GetProduto para criar o URI de 
             // Location do cabeçalho. A palavra-chave nameof do C# é usada para
             // evitar o hard-coding do nome da ação, na chamada CreatedAtAction.
         }
 
-        // Exclui o TodoItem que tem o ID especificado.
+        // Exclui o Produto que tem o ID especificado.
         // Se não existir, a resposta é HTTP 204 No Content
-        // DELETE: api/TodoItems/5
+        // DELETE: api/Produtos/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodoItem(long id)
+        public async Task<IActionResult> DeleteProduto(long id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
-            if (todoItem == null)
+            var Produto = await _context.Produtos.FindAsync(id);
+            if (Produto == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todoItem);
+            _context.Produtos.Remove(Produto);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TodoItemExists(long id)
+        private bool ProdutoExists(long id)
         {
-            return _context.TodoItems.Any(e => e.Id == id);
+            return _context.Produtos.Any(e => e.Id == id);
         }
     }
 }
