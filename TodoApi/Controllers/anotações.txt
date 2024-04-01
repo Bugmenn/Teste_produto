@@ -1,0 +1,1 @@
+A pasta "Controllers" contem basicamente os metodos POST e GET, além de DELETE.
